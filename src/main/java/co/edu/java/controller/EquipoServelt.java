@@ -12,28 +12,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import co.edu.java.dao.EquipoDao;
 import co.edu.java.dao.PaisDao;
-import co.edu.java.modelo.Pais;
-
+import co.edu.java.modelo.Equipo;
 
 /**
- * Servlet implementation class PaisServlet
+ * Servlet implementation class EquipoServelt
  */
-@WebServlet({ "/PaisServlet", "/pais" })
-public class PaisServlet extends HttpServlet {
+@WebServlet("/EquipoServelt")
+public class EquipoServelt extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private PaisDao paisDao;
+	private EquipoDao equipoDao;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PaisServlet() {
+    public EquipoServelt() {
         super();
         // TODO Auto-generated constructor stub
     }
     
     public void init(ServletConfig conf) throws ServletException{
-    	this.paisDao = new PaisDao();
+    	this.equipoDao = new EquipoDao();
     }
 
 	/**
@@ -48,25 +48,26 @@ public class PaisServlet extends HttpServlet {
 				verNuevo(request, response);
 				break;
 			case "/insertar":
-				insertarPais(request, response);
+				insertarEquipo(request, response);
 				break;
 			case "/eliminar":
-				eliminarPais(request, response);
+				eliminarEquipo(request, response);
 				break;
 			case "/editar":
 				editarNuevo(request, response);
 				break;
 			case "/actualizar":
-				actualizarPais(request, response);
+				actualizarEquipo(request, response);
 				break;
 			default:
-				listarPais(request, response);
+				listarEquipo(request, response);
 				break;
 			}
 			} catch (SQLException e) {
 				throw new ServletException (e);
 			}
 	}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -77,51 +78,51 @@ public class PaisServlet extends HttpServlet {
 	}
 	
 	private void verNuevo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("pais.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("equipo.jsp");
 		rd.forward(request, response);
 	}
 	
-	private void insertarPais(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ServletException {
+	private void insertarEquipo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ServletException {
 		String id = request.getParameter("id");
-		String nombre= request.getParameter("nombre");
-	
-		Pais pais = new Pais(id,nombre);
-		paisDao.insert(pais);
+		String nombre= request.getParameter("name");
+		String pais= request.getParameter("country");
+		Equipo equipo = new Equipo(id,nombre,pais);
+		equipoDao.insert(equipo);
 		response.sendRedirect("list");
 	}
 	
 	private void editarNuevo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		
-		Pais actual = paisDao.select(id);
+		Equipo actual = equipoDao.select(id);
 		request.setAttribute("usuario", actual);
 		
-		RequestDispatcher rd = request.getRequestDispatcher("pais.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("equipo.jsp");
 		rd.forward(request, response);
 	}
 	
-	private void actualizarPais(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ServletException {
+	private void actualizarEquipo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ServletException {
 		String id = request.getParameter("id");
-		String nombre= request.getParameter("nombre");
-
+		String nombre= request.getParameter("name");
+		String pais= request.getParameter("country");
 		
-		Pais pais = new Pais(id,nombre);
-		paisDao.update(pais);
+		Equipo equipo = new Equipo(id,nombre,pais);
+		equipoDao.update(equipo);
 		response.sendRedirect("list");
 	}
 	
-	private void eliminarPais(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ServletException {
+	private void eliminarEquipo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ServletException {
 		String id = request.getParameter("id");
 		
-		paisDao.delete(id);
+		equipoDao.delete(id);
 		response.sendRedirect("list");
 	}
 	
-	private void listarPais (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ServletException {
-	List <Pais> lista = paisDao.selectAll();
+	private void listarEquipo (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ServletException {
+	List <Equipo> lista = equipoDao.selectAll();
 	request.setAttribute("lista", lista);
 	
-	RequestDispatcher rd = request.getRequestDispatcher("paisList.jsp");
+	RequestDispatcher rd = request.getRequestDispatcher("equipoList.jsp");
 	rd.forward(request, response);
 	}
 

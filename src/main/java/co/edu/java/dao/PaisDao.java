@@ -14,9 +14,9 @@ import co.edu.java.utils.Conexion;
 public class PaisDao {
 
 	private Conexion conexion;
-	private static final String insertarSQL = "INSERT INTO country (id,nombre) Values (?,?);";
+	private static final String insertarSQL = "INSERT INTO country (id,name) Values (?,?);";
 	private static final String eliminarSQL = "DELETE FROM country WHERE id = ?;";
-	private static final String actualizarSQL = "UPDATE country SET nombre=?bWHERE id=?;";
+	private static final String actualizarSQL = "UPDATE country SET nombre=? WHERE id=?;";
 	private static final String seleccionarID = "SELECT * from country WHERE id=?;";
 	private static final String seleccionarSQL = "SELECT * from country;";
 	
@@ -28,7 +28,7 @@ public class PaisDao {
 		try {
 			PreparedStatement ps = conexion.setPreparedStatement(insertarSQL);
 			ps.setString(1, pais.getId());
-			ps.setString(1, pais.getNombre());
+			ps.setString(2, pais.getNombre());
 			conexion.execute();
 		} catch(SQLException e) {
 			
