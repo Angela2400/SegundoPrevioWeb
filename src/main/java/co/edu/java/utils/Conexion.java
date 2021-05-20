@@ -26,7 +26,7 @@ public class Conexion {
 			Class.forName(driver).getDeclaredConstructor().newInstance();
 			con = ((Connection)DriverManager.getConnection(url+db,user,pass));
 			boolean valid = con.isValid(50000);
-			System.out.println(valid ? "Test Ok" : "Test Fails");
+			System.out.println(valid ? "Test Ok" : "Test Fail");
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
